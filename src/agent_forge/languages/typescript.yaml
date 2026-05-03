@@ -1,0 +1,25 @@
+language: typescript
+package_manager: pnpm
+project_layout: src
+entry_point: src/main.ts
+manifest: package.json
+required_tools:
+  formatter: prettier
+  type_checker: tsc
+  test: vitest
+pinned_dependencies:
+  "@anthropic-ai/sdk": "^0.30.0"
+  zod: "^3.23.0"
+  dotenv: "^16.4.0"
+framework_dependencies:
+  vercel_ai_sdk:
+    name: ai
+    version: "^4.0.0"
+  mastra:
+    name: "@mastra/core"
+    version: "^0.1.0"
+forbidden:
+  - "do not use CommonJS; use ESM"
+  - "do not use any; use proper types or unknown"
+  - "do not use console.log for app logging; use pino"
+smoke_check: "pnpm exec tsx -e \"import('./src/main.ts').then(m => console.log('ok'))\""

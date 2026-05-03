@@ -1,0 +1,28 @@
+language: python
+package_manager: uv
+project_layout: src
+entry_point: src/{project_name}/main.py
+manifest: pyproject.toml
+required_tools:
+  formatter: ruff
+  type_checker: mypy
+  test: pytest
+pinned_dependencies:
+  anthropic: ">=0.39.0"
+  pydantic: ">=2.7.0"
+  python-dotenv: ">=1.0.1"
+framework_dependencies:
+  pydantic_ai:
+    name: pydantic-ai
+    version: ">=0.0.13"
+  langgraph:
+    name: langgraph
+    version: ">=0.2.0"
+  crewai:
+    name: crewai
+    version: ">=0.70.0"
+forbidden:
+  - "do not use requirements.txt; use pyproject.toml"
+  - "do not use print() for logging; use structlog"
+  - "do not pin Python below 3.11"
+smoke_check: "uv run python -c 'from {project_name}.main import agent; print(\"ok\")'"
