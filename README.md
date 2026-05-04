@@ -1,18 +1,28 @@
 # agent-forge
 
-`agent-forge` generates runnable AI agent projects from markdown specs. Point it at a clone of [agent-deployments](https://github.com/jagguvarma15/agent-deployments), pick a recipe, target language, and framework, and the CLI assembles the relevant docs, asks Claude to emit a complete project, validates the response, and writes the files atomically into your destination of choice.
+`agent-forge` generates runnable AI agent projects from markdown specs. It ships with bundled knowledge from [agent-deployments](https://github.com/jagguvarma15/agent-deployments) — pick a recipe, target language, and framework, and the CLI assembles the relevant docs, asks Claude to emit a complete project, validates the response, and writes the files atomically into your destination of choice.
 
 ## Install
 
+### Homebrew (recommended)
+
 ```bash
-# Once published to PyPI:
+brew tap jagguvarma15/agent-forge
+brew install agent-forge
+```
+
+### PyPI
+
+```bash
+pipx install agent-forge
+# or
 uv tool install agent-forge
 ```
 
-For local development:
+### Local development
 
 ```bash
-git clone https://github.com/your-org/agent-forge
+git clone https://github.com/jagguvarma15/agent-forge
 cd agent-forge
 uv sync
 ```
@@ -21,8 +31,14 @@ uv sync
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
+agent-forge new
+```
+
+The bundled recipes work out of the box. To use a custom agent-deployments checkout instead:
+
+```bash
 export AGENT_FORGE_DEPLOYMENTS_PATH=/path/to/agent-deployments
-uv run agent-forge new
+agent-forge new
 ```
 
 The interactive `new` flow walks you through:

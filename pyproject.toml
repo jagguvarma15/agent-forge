@@ -26,6 +26,12 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/agent_forge"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"src/agent_forge/_bundled_deployments/docs" = "agent_forge/_bundled_deployments/docs"
+
+[tool.hatch.build.targets.sdist.force-include]
+"src/agent_forge/_bundled_deployments/docs" = "src/agent_forge/_bundled_deployments/docs"
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"
