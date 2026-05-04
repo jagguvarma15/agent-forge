@@ -86,14 +86,16 @@ def load_config(env: dict[str, str] | None = None) -> Config:
 
     if not api_key:
         raise ConfigError(
-            f"Missing {ENV_API_KEY}. Set it in your environment or in a .env file. "
+            f"Missing {ENV_API_KEY}. Set it in your environment or in a .env file.\n"
+            "  export ANTHROPIC_API_KEY='sk-ant-...'\n"
             "See .env.example for the expected format."
         )
 
     if not deployments_raw:
         raise ConfigError(
             f"Missing deployments_path. Set {ENV_DEPLOYMENTS_PATH} or add "
-            f"deployments_path = \"...\" to {config_path}."
+            f"deployments_path = \"...\" to {config_path}.\n"
+            "  export AGENT_FORGE_DEPLOYMENTS_PATH='/path/to/agent-deployments'"
         )
 
     deployments_path = Path(deployments_raw).expanduser()

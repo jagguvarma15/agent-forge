@@ -58,12 +58,26 @@ def parse(raw: str) -> GenerationResult:
     try:
         data: Any = json.loads(cleaned)
     except json.JSONDecodeError as exc:
-        raise ContractParseError(raw=raw, reason=f"invalid JSON: {exc}") from exc
+        raise ContractParseError(
+            raw=raw,
+            reason=(
+                f"invalid JSON: {exc}\n"
+                "Hint: The LLM response was not valid JSON. "
+                "Re-run the command to retry, or check the saved failure file."
+            ),
+        ) from exc
 
     try:
         return GenerationResult.model_validate(data)
     except ValidationError as exc:
-        raise ContractParseError(raw=raw, reason=str(exc)) from exc
+        raise ContractParseError(
+            raw=raw,
+            reason=(
+                f"Schema validation failed:\n{exc}\n"
+                "Hint: The JSON structure didn't match the expected contract. "
+                "The repair flow will attempt to fix this automatically."
+            ),
+        ) from exc
 
 
 def validate_paths(result: GenerationResult, dest: Path) -> None:
