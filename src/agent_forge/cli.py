@@ -24,6 +24,7 @@ from rich.logging import RichHandler
 from rich.panel import Panel
 
 from agent_forge import __version__
+from agent_forge.cache import get_cached, save_cache
 from agent_forge.config import Config, ConfigError, load_config
 from agent_forge.context import assemble
 from agent_forge.contract import (
@@ -274,6 +275,11 @@ def cmd_new(
         "--skip-validation",
         help="Do not run the post-generation static validation tier.",
     ),
+    no_cache: bool = typer.Option(
+        False,
+        "--no-cache",
+        help="Skip response cache and always call the LLM.",
+    ),
 ) -> None:
     """Generate a new agent project."""
     try:
@@ -336,14 +342,25 @@ def cmd_new(
         language_hints=hints,
     )
 
-    with console.status(f"Generating with {cfg.model}..."):
-        result = _generate_with_repair(req, cfg, dest, hints, final_name)
+    cached_raw = None if no_cache else get_cached(
+        cfg.cache_dir, final_name, chosen_language, chosen_framework, ctx.body
+    )
+    if cached_raw is not None:
+        console.print("[dim]Using cached response.[/]")
+        result = _attempt_parse(cached_raw, dest, hints, final_name)
+    else:
+        with console.status(f"Generating with {cfg.model}..."):
+            result = _generate_with_repair(req, cfg, dest, hints, final_name)
+        save_cache(cfg.cache_dir, final_name, chosen_language, chosen_framework, ctx.body, json.dumps(result.model_dump()))
 
     usage = get_last_usage()
-    console.print(
-        f"[green]Generated[/] {len(result.files)} files. "
-        f"Tokens: {usage.input_tokens} in / {usage.output_tokens} out"
-    )
+    if usage.input_tokens > 0:
+        console.print(
+            f"[green]Generated[/] {len(result.files)} files. "
+            f"Tokens: {usage.input_tokens} in / {usage.output_tokens} out"
+        )
+    else:
+        console.print(f"[green]Generated[/] {len(result.files)} files.")
 
     try:
         report = write_project(result, dest, write_mode)
