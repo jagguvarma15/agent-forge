@@ -32,4 +32,5 @@ Thumbs.db
 .env.local
 
 # Bundled deployments docs (fetched at build time via scripts/sync_deployments.sh)
-src/agent_forge/_bundled_deployments/docs/
+src/agent_forge/_bundled_deployments/docs/*
+!src/agent_forge/_bundled_deployments/docs/.gitkeep
