@@ -7,6 +7,7 @@ the seam and supply canned responses.
 from __future__ import annotations
 
 import importlib.resources as resources
+import logging
 import time
 from typing import Any, Protocol, cast
 
@@ -16,6 +17,8 @@ from pydantic import BaseModel
 
 from agent_forge.config import Config
 from agent_forge.context import AssembledContext
+
+logger = logging.getLogger(__name__)
 
 PROMPTS_PACKAGE = "agent_forge.prompts"
 SYSTEM_PROMPT_FILE = "system.md"
@@ -96,6 +99,35 @@ def _extract_text(response: Any) -> str:
     return "".join(parts)
 
 
+class UsageInfo(BaseModel):
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cache_read_input_tokens: int = 0
+    cache_creation_input_tokens: int = 0
+
+
+def _extract_usage(response: Any) -> UsageInfo:
+    """Extract token usage from an Anthropic response."""
+    usage = getattr(response, "usage", None)
+    if usage is None:
+        return UsageInfo()
+    return UsageInfo(
+        input_tokens=getattr(usage, "input_tokens", 0) or 0,
+        output_tokens=getattr(usage, "output_tokens", 0) or 0,
+        cache_read_input_tokens=getattr(usage, "cache_read_input_tokens", 0) or 0,
+        cache_creation_input_tokens=getattr(usage, "cache_creation_input_tokens", 0) or 0,
+    )
+
+
+# Module-level last usage for reporting
+_last_usage: UsageInfo = UsageInfo()
+
+
+def get_last_usage() -> UsageInfo:
+    """Return token usage from the most recent API call."""
+    return _last_usage
+
+
 def _call_with_retry(
     client: _AnthropicLike,
     *,
@@ -103,21 +135,31 @@ def _call_with_retry(
     system_blocks: list[dict[str, Any]],
     user_message: str,
 ) -> str:
+    global _last_usage
     delays = [1.0, 2.0, 4.0]
     last_exc: BaseException | None = None
     for attempt in range(len(delays) + 1):
         try:
+            logger.debug("Calling %s (attempt %d, max_tokens=%d)", config.model, attempt + 1, config.max_tokens)
+            t0 = time.time()
             response = client.messages.create(
                 model=config.model,
                 max_tokens=config.max_tokens,
                 system=system_blocks,
                 messages=[{"role": "user", "content": user_message}],
             )
+            elapsed = time.time() - t0
+            _last_usage = _extract_usage(response)
+            logger.debug(
+                "Response received in %.1fs — input: %d, output: %d tokens",
+                elapsed, _last_usage.input_tokens, _last_usage.output_tokens,
+            )
             return _extract_text(response)
         except Exception as exc:
             last_exc = exc
             if attempt >= len(delays) or not _is_retryable(exc):
                 raise
+            logger.debug("Retryable error: %s — retrying in %.0fs", exc, delays[attempt])
             time.sleep(delays[attempt])
     if last_exc is not None:
         raise last_exc

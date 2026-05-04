@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import importlib.resources as resources
 import json
+import logging
 import re
 import time
 from pathlib import Path
@@ -19,6 +20,7 @@ from typing import Any
 import typer
 import yaml
 from rich.console import Console
+from rich.logging import RichHandler
 from rich.panel import Panel
 
 from agent_forge import __version__
@@ -32,7 +34,7 @@ from agent_forge.contract import (
     validate_required_files,
 )
 from agent_forge.discovery import DiscoveryError, Recipe, discover_recipes
-from agent_forge.generator import GenerationRequest, generate, repair
+from agent_forge.generator import GenerationRequest, generate, get_last_usage, repair
 from agent_forge.validator import ValidationTier
 from agent_forge.validator import validate as run_validate
 from agent_forge.writer import (
@@ -70,8 +72,21 @@ def main(
         is_eager=True,
         help="Show the agent-forge version and exit.",
     ),
+    verbose: bool = typer.Option(
+        False,
+        "--verbose",
+        "-v",
+        help="Enable debug logging.",
+    ),
 ) -> None:
     """agent-forge: generate runnable AI agent projects from markdown specs."""
+    level = logging.DEBUG if verbose else logging.WARNING
+    logging.basicConfig(
+        level=level,
+        format="%(message)s",
+        datefmt="[%X]",
+        handlers=[RichHandler(rich_tracebacks=True, show_path=False)],
+    )
     if ctx.invoked_subcommand is None:
         typer.echo(ctx.get_help())
         raise typer.Exit()
@@ -324,7 +339,11 @@ def cmd_new(
     with console.status(f"Generating with {cfg.model}..."):
         result = _generate_with_repair(req, cfg, dest, hints, final_name)
 
-    console.print(f"[green]Generated[/] {len(result.files)} files.")
+    usage = get_last_usage()
+    console.print(
+        f"[green]Generated[/] {len(result.files)} files. "
+        f"Tokens: {usage.input_tokens} in / {usage.output_tokens} out"
+    )
 
     try:
         report = write_project(result, dest, write_mode)
