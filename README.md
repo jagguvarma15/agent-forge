@@ -13,10 +13,14 @@ brew install agent-forge
 
 ### PyPI
 
+The package is published as **`agent-custom-forge`** (the name `agent-forge` was already taken on PyPI), but the installed command is still `agent-forge`.
+
 ```bash
-pipx install agent-forge
+pipx install agent-custom-forge
 # or
-uv tool install agent-forge
+uv tool install agent-custom-forge
+# or, for one-off use:
+uvx --from agent-custom-forge agent-forge --help
 ```
 
 ### Local development

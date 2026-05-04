@@ -1,7 +1,7 @@
 [project]
-name = "agent-forge"
+name = "agent-custom-forge"
 version = "0.1.0"
-description = "Generate runnable AI agent projects from markdown specs in the agent-deployments repo."
+description = "Generate runnable AI agent projects from markdown specs in the agent-deployments repo. (Distributed as `agent-custom-forge`; CLI command is `agent-forge`.)"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
