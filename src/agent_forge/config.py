@@ -92,13 +92,21 @@ def load_config(env: dict[str, str] | None = None) -> Config:
         )
 
     if not deployments_raw:
-        raise ConfigError(
-            f"Missing deployments_path. Set {ENV_DEPLOYMENTS_PATH} or add "
-            f"deployments_path = \"...\" to {config_path}.\n"
-            "  export AGENT_FORGE_DEPLOYMENTS_PATH='/path/to/agent-deployments'"
-        )
+        # Fall back to bundled deployments data (populated at build time)
+        from agent_forge._bundled_deployments import bundled_docs_path
 
-    deployments_path = Path(deployments_raw).expanduser()
+        bundled = bundled_docs_path()
+        docs_dir = bundled / "docs"
+        if docs_dir.is_dir() and any(docs_dir.iterdir()):
+            deployments_path = bundled
+        else:
+            raise ConfigError(
+                f"Missing deployments_path. Set {ENV_DEPLOYMENTS_PATH} or add "
+                f"deployments_path = \"...\" to {config_path}.\n"
+                "  export AGENT_FORGE_DEPLOYMENTS_PATH='/path/to/agent-deployments'"
+            )
+    else:
+        deployments_path = Path(deployments_raw).expanduser()
 
     return Config(
         deployments_path=deployments_path,
