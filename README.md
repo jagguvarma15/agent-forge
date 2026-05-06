@@ -117,26 +117,7 @@ All writes stage to a sibling temp directory and `os.replace` into place, so a f
 
 `agent-forge validate /path/to/generated --tier static|build|smoke` reruns one of the post-generation tiers without re-invoking the LLM.
 
-## Project layout
 
-```
-agent-forge/
-|- pyproject.toml
-|- src/agent_forge/
-|  |- cli.py            # Typer commands (new / config / validate)
-|  |- config.py         # Config model + env/TOML loader
-|  |- discovery.py      # Recipe discovery in docs/recipes/
-|  |- context.py        # Assemble the LLM context bundle
-|  |- contract.py       # Parse + validate the LLM JSON contract
-|  |- generator.py      # Anthropic client wrapper (with retries)
-|  |- writer.py         # Atomic file writer with diff/skip/overwrite
-|  |- validator.py      # Static / build / smoke validation tiers
-|  |- prompts/          # system.md, user_template.md, repair.md
-|  `- languages/        # python.yaml, typescript.yaml, ...
-`- tests/
-   |- fixtures/         # mock_deployments + canned LLM responses
-   `- test_*.py
-```
 
 ## License
 
