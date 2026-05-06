@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 
 from agent_forge._bundled_deployments import bundled_docs_path
 
-DEFAULT_MODEL = "claude-opus-4-5"
+DEFAULT_MODEL = "claude-opus-4-7"
 DEFAULT_MAX_TOKENS = 16000
 
 ENV_API_KEY = "ANTHROPIC_API_KEY"
