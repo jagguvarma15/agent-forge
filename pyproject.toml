@@ -1,5 +1,5 @@
 [project]
-name = "agent-scaffold"
+name = "agent-scaffold-cli"
 version = "0.1.1"
 description = "Generate runnable AI agent projects from markdown specs in the agent-deployments repo."
 readme = "README.md"

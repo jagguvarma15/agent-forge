@@ -4,14 +4,14 @@
 
 ## Install
 
-The package is published on PyPI as **`agent-scaffold`**.
+The package is published on PyPI as **`agent-scaffold-cli`** (the CLI command itself is still `agent-scaffold`).
 
 ```bash
-pipx install agent-scaffold
+pipx install agent-scaffold-cli
 # or
-uv tool install agent-scaffold
+uv tool install agent-scaffold-cli
 # or, for one-off use:
-uvx --from agent-scaffold agent-scaffold --help
+uvx --from agent-scaffold-cli agent-scaffold --help
 ```
 
 ### Local development
