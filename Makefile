@@ -7,7 +7,7 @@ build: sync-deployments
 	uv build
 
 test:
-	uv run pytest --cov=agent_forge
+	uv run pytest --cov=agent_scaffold
 
 lint:
 	uv run ruff check src/ tests/

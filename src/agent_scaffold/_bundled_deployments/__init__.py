@@ -1,7 +1,7 @@
 """Bundled agent-deployments docs for zero-config usage.
 
 The docs/ directory is populated at build time by scripts/sync_deployments.sh.
-When installed via PyPI/Homebrew, the bundled docs allow agent-forge to work
+When installed via PyPI/Homebrew, the bundled docs allow agent-scaffold to work
 without requiring a separate agent-deployments clone.
 """
 

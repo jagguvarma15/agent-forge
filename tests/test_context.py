@@ -1,11 +1,11 @@
-"""Tests for agent_forge.context."""
+"""Tests for agent_scaffold.context."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from agent_forge.context import assemble
-from agent_forge.discovery import discover_recipes
+from agent_scaffold.context import assemble
+from agent_scaffold.discovery import discover_recipes
 
 
 def _recipe(deployments: Path, slug: str):  # type: ignore[no-untyped-def]

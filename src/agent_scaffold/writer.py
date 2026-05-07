@@ -18,7 +18,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, Field
 
-from agent_forge.contract import GeneratedFile, GenerationResult
+from agent_scaffold.contract import GeneratedFile, GenerationResult
 
 
 class WriteMode(str, Enum):
@@ -90,7 +90,7 @@ def write_project(
 
     parent = dest.parent
     parent.mkdir(parents=True, exist_ok=True)
-    staging_root = Path(tempfile.mkdtemp(prefix=".agent-forge-stage-", dir=parent))
+    staging_root = Path(tempfile.mkdtemp(prefix=".agent-scaffold-stage-", dir=parent))
     try:
         for entry, _decision in plan:
             staged_path = staging_root / _normalize(entry.path)

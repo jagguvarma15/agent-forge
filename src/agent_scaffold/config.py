@@ -1,7 +1,7 @@
-"""Configuration loading for agent-forge.
+"""Configuration loading for agent-scaffold.
 
 Resolves ``Config`` from environment variables with a TOML config file at
-``~/.config/agent-forge/config.toml`` as a fallback for ``deployments_path``
+``~/.config/agent-scaffold/config.toml`` as a fallback for ``deployments_path``
 and ``model``.
 """
 
@@ -14,19 +14,19 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from agent_forge._bundled_deployments import bundled_docs_path
+from agent_scaffold._bundled_deployments import bundled_docs_path
 
 DEFAULT_MODEL = "claude-opus-4-7"
 DEFAULT_MAX_TOKENS = 16000
 
 ENV_API_KEY = "ANTHROPIC_API_KEY"
-ENV_MODEL = "AGENT_FORGE_MODEL"
-ENV_DEPLOYMENTS_PATH = "AGENT_FORGE_DEPLOYMENTS_PATH"
-ENV_CACHE_DIR = "AGENT_FORGE_CACHE_DIR"
-ENV_CONFIG_PATH = "AGENT_FORGE_CONFIG_PATH"
+ENV_MODEL = "AGENT_SCAFFOLD_MODEL"
+ENV_DEPLOYMENTS_PATH = "AGENT_SCAFFOLD_DEPLOYMENTS_PATH"
+ENV_CACHE_DIR = "AGENT_SCAFFOLD_CACHE_DIR"
+ENV_CONFIG_PATH = "AGENT_SCAFFOLD_CONFIG_PATH"
 
-DEFAULT_CONFIG_RELATIVE = Path(".config/agent-forge/config.toml")
-DEFAULT_CACHE_RELATIVE = Path(".cache/agent-forge")
+DEFAULT_CONFIG_RELATIVE = Path(".config/agent-scaffold/config.toml")
+DEFAULT_CACHE_RELATIVE = Path(".cache/agent-scaffold")
 
 
 class ConfigError(Exception):
@@ -103,7 +103,7 @@ def load_config(env: dict[str, str] | None = None) -> Config:
             raise ConfigError(
                 f"Missing deployments_path. Set {ENV_DEPLOYMENTS_PATH} or add "
                 f"deployments_path = \"...\" to {config_path}.\n"
-                "  export AGENT_FORGE_DEPLOYMENTS_PATH='/path/to/agent-deployments'"
+                "  export AGENT_SCAFFOLD_DEPLOYMENTS_PATH='/path/to/agent-deployments'"
             )
     else:
         deployments_path = Path(deployments_raw).expanduser()

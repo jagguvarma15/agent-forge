@@ -19,7 +19,7 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-from agent_forge.discovery import Recipe
+from agent_scaffold.discovery import Recipe
 
 CHARS_PER_TOKEN = 4
 TOKEN_WARN_THRESHOLD = 80_000
@@ -84,7 +84,7 @@ class AssembledContext(BaseModel):
 
 
 def _warn(msg: str) -> None:
-    print(f"agent-forge: warning: {msg}", file=sys.stderr)
+    print(f"agent-scaffold: warning: {msg}", file=sys.stderr)
 
 
 def _docs_root(deployments_path: Path) -> Path:

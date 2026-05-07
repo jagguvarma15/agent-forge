@@ -1,4 +1,4 @@
-"""End-to-end test: ``agent-forge new`` with a mocked Anthropic client."""
+"""End-to-end test: ``agent-scaffold new`` with a mocked Anthropic client."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ from typing import Any
 import pytest
 from typer.testing import CliRunner
 
-from agent_forge import cli, generator
-from agent_forge.cli import app
+from agent_scaffold import cli, generator
+from agent_scaffold.cli import app
 
 
 class _Block:
@@ -57,8 +57,8 @@ def test_new_non_interactive_generates_project(
 
     cache_dir = tmp_path / "cache"
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
-    monkeypatch.setenv("AGENT_FORGE_DEPLOYMENTS_PATH", str(mock_deployments_path))
-    monkeypatch.setenv("AGENT_FORGE_CACHE_DIR", str(cache_dir))
+    monkeypatch.setenv("AGENT_SCAFFOLD_DEPLOYMENTS_PATH", str(mock_deployments_path))
+    monkeypatch.setenv("AGENT_SCAFFOLD_CACHE_DIR", str(cache_dir))
 
     dest = tmp_path / "out" / "demo_agent"
 
@@ -111,8 +111,8 @@ def test_new_repair_then_failure_saves_raw(
 
     cache_dir = tmp_path / "cache"
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
-    monkeypatch.setenv("AGENT_FORGE_DEPLOYMENTS_PATH", str(mock_deployments_path))
-    monkeypatch.setenv("AGENT_FORGE_CACHE_DIR", str(cache_dir))
+    monkeypatch.setenv("AGENT_SCAFFOLD_DEPLOYMENTS_PATH", str(mock_deployments_path))
+    monkeypatch.setenv("AGENT_SCAFFOLD_CACHE_DIR", str(cache_dir))
 
     dest = tmp_path / "out" / "demo_agent"
 
@@ -144,7 +144,7 @@ def test_new_repair_then_failure_saves_raw(
 def test_version_flag(runner: CliRunner) -> None:
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert "agent-forge" in result.output
+    assert "agent-scaffold" in result.output
 
 
 def test_config_command(
@@ -154,8 +154,8 @@ def test_config_command(
     mock_deployments_path: Path,
 ) -> None:
     monkeypatch.setenv("ANTHROPIC_API_KEY", "secret-token")
-    monkeypatch.setenv("AGENT_FORGE_DEPLOYMENTS_PATH", str(mock_deployments_path))
-    monkeypatch.setenv("AGENT_FORGE_CACHE_DIR", str(tmp_path / "cache"))
+    monkeypatch.setenv("AGENT_SCAFFOLD_DEPLOYMENTS_PATH", str(mock_deployments_path))
+    monkeypatch.setenv("AGENT_SCAFFOLD_CACHE_DIR", str(tmp_path / "cache"))
     result = runner.invoke(app, ["config"])
     assert result.exit_code == 0, result.output
     assert "secret-token" not in result.output

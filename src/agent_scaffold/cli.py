@@ -1,10 +1,10 @@
-"""Typer CLI entry point for agent-forge.
+"""Typer CLI entry point for agent-scaffold.
 
 Commands:
-- ``agent-forge new``      : interactive (or ``--non-interactive``) project generator.
-- ``agent-forge config``   : print resolved configuration.
-- ``agent-forge validate`` : re-run validation tiers on an existing generated project.
-- ``agent-forge --version``
+- ``agent-scaffold new``      : interactive (or ``--non-interactive``) project generator.
+- ``agent-scaffold config``   : print resolved configuration.
+- ``agent-scaffold validate`` : re-run validation tiers on an existing generated project.
+- ``agent-scaffold --version``
 """
 
 from __future__ import annotations
@@ -23,35 +23,35 @@ from rich.console import Console
 from rich.logging import RichHandler
 from rich.panel import Panel
 
-from agent_forge import __version__
-from agent_forge.cache import get_cached, save_cache
-from agent_forge.config import Config, ConfigError, load_config
-from agent_forge.context import assemble
-from agent_forge.contract import (
+from agent_scaffold import __version__
+from agent_scaffold.cache import get_cached, save_cache
+from agent_scaffold.config import Config, ConfigError, load_config
+from agent_scaffold.context import assemble
+from agent_scaffold.contract import (
     ContractParseError,
     GenerationResult,
     parse,
     validate_paths,
     validate_required_files,
 )
-from agent_forge.discovery import DiscoveryError, Recipe, discover_recipes
-from agent_forge.generator import (
+from agent_scaffold.discovery import DiscoveryError, Recipe, discover_recipes
+from agent_scaffold.generator import (
     GenerationRequest,
     generate,
     get_last_usage,
     prompts_signature,
     repair,
 )
-from agent_forge.validator import ValidationTier
-from agent_forge.validator import validate as run_validate
-from agent_forge.writer import (
+from agent_scaffold.validator import ValidationTier
+from agent_scaffold.validator import validate as run_validate
+from agent_scaffold.writer import (
     DestinationExistsError,
     WriteMode,
     write_project,
 )
 
 app = typer.Typer(
-    name="agent-forge",
+    name="agent-scaffold",
     help="Generate runnable AI agent projects from markdown specs.",
     add_completion=False,
     invoke_without_command=True,
@@ -59,13 +59,13 @@ app = typer.Typer(
 
 console = Console()
 
-LANGUAGES_PACKAGE = "agent_forge.languages"
+LANGUAGES_PACKAGE = "agent_scaffold.languages"
 PROJECT_NAME_RE = re.compile(r"^[a-z0-9_-]+$")
 
 
 def _version_callback(value: bool) -> None:
     if value:
-        typer.echo(f"agent-forge {__version__}")
+        typer.echo(f"agent-scaffold {__version__}")
         raise typer.Exit()
 
 
@@ -77,7 +77,7 @@ def main(
         "--version",
         callback=_version_callback,
         is_eager=True,
-        help="Show the agent-forge version and exit.",
+        help="Show the agent-scaffold version and exit.",
     ),
     verbose: bool = typer.Option(
         False,
@@ -86,7 +86,7 @@ def main(
         help="Enable debug logging.",
     ),
 ) -> None:
-    """agent-forge: generate runnable AI agent projects from markdown specs."""
+    """agent-scaffold: generate runnable AI agent projects from markdown specs."""
     level = logging.DEBUG if verbose else logging.WARNING
     logging.basicConfig(
         level=level,
@@ -250,7 +250,7 @@ def cmd_config() -> None:
     payload = cfg.model_dump()
     payload["anthropic_api_key"] = "***" if payload.get("anthropic_api_key") else ""
     payload = {k: (str(v) if isinstance(v, Path) else v) for k, v in payload.items()}
-    console.print(Panel(json.dumps(payload, indent=2), title="agent-forge config"))
+    console.print(Panel(json.dumps(payload, indent=2), title="agent-scaffold config"))
 
 
 @app.command("new")
@@ -508,5 +508,5 @@ def cmd_validate(
         raise typer.Exit(code=1)
 
 
-# Re-export for ``python -m agent_forge``.
+# Re-export for ``python -m agent_scaffold``.
 __all__ = ["app"]

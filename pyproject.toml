@@ -1,11 +1,11 @@
 [project]
-name = "agent-custom-forge"
+name = "agent-scaffold"
 version = "0.1.0"
-description = "Generate runnable AI agent projects from markdown specs in the agent-deployments repo. (Distributed as `agent-custom-forge`; CLI command is `agent-forge`.)"
+description = "Generate runnable AI agent projects from markdown specs in the agent-deployments repo."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "agent-forge contributors" }]
+authors = [{ name = "agent-scaffold contributors" }]
 keywords = ["ai", "agent", "anthropic", "claude", "cli", "code-generation", "scaffolding"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -30,13 +30,13 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/jagguvarma15/agent-forge"
-Repository = "https://github.com/jagguvarma15/agent-forge"
-Issues = "https://github.com/jagguvarma15/agent-forge/issues"
-Changelog = "https://github.com/jagguvarma15/agent-forge/releases"
+Homepage = "https://github.com/jagguvarma15/agent-scaffold"
+Repository = "https://github.com/jagguvarma15/agent-scaffold"
+Issues = "https://github.com/jagguvarma15/agent-scaffold/issues"
+Changelog = "https://github.com/jagguvarma15/agent-scaffold/releases"
 
 [project.scripts]
-agent-forge = "agent_forge.cli:app"
+agent-scaffold = "agent_scaffold.cli:app"
 
 [build-system]
 requires = ["hatchling>=1.24"]
@@ -46,13 +46,13 @@ build-backend = "hatchling.build"
 exclude = ["**/.gitkeep"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/agent_forge"]
+packages = ["src/agent_scaffold"]
 
 [tool.hatch.build.targets.wheel.force-include]
-"src/agent_forge/_bundled_deployments/docs" = "agent_forge/_bundled_deployments/docs"
+"src/agent_scaffold/_bundled_deployments/docs" = "agent_scaffold/_bundled_deployments/docs"
 
 [tool.hatch.build.targets.sdist.force-include]
-"src/agent_forge/_bundled_deployments/docs" = "src/agent_forge/_bundled_deployments/docs"
+"src/agent_scaffold/_bundled_deployments/docs" = "src/agent_scaffold/_bundled_deployments/docs"
 
 [tool.ruff]
 line-length = 100
@@ -64,7 +64,7 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["B008"]
-"src/agent_forge/cli.py" = ["B008"]
+"src/agent_scaffold/cli.py" = ["B008"]
 
 [tool.mypy]
 python_version = "3.11"
@@ -93,7 +93,7 @@ dev = [
 ]
 
 [tool.coverage.run]
-source = ["agent_forge"]
+source = ["agent_scaffold"]
 
 [tool.coverage.report]
 show_missing = true

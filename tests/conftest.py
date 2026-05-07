@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for agent-forge tests."""
+"""Shared pytest fixtures for agent-scaffold tests."""
 
 from __future__ import annotations
 
@@ -25,8 +25,8 @@ def mock_responses_path() -> Path:
 
 @pytest.fixture
 def clean_env(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
-    """Strip all AGENT_FORGE_* and ANTHROPIC_* env vars for isolated tests."""
+    """Strip all AGENT_SCAFFOLD_* and ANTHROPIC_* env vars for isolated tests."""
     for key in list(os.environ):
-        if key.startswith("AGENT_FORGE_") or key.startswith("ANTHROPIC_"):
+        if key.startswith("AGENT_SCAFFOLD_") or key.startswith("ANTHROPIC_"):
             monkeypatch.delenv(key, raising=False)
     yield

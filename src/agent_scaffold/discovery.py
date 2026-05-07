@@ -64,7 +64,7 @@ def _coerce_languages(value: Any) -> list[str]:
 
 
 def _warn(msg: str) -> None:
-    print(f"agent-forge: warning: {msg}", file=sys.stderr)
+    print(f"agent-scaffold: warning: {msg}", file=sys.stderr)
 
 
 def discover_recipes(deployments_path: Path) -> list[Recipe]:

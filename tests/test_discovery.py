@@ -1,4 +1,4 @@
-"""Tests for agent_forge.discovery."""
+"""Tests for agent_scaffold.discovery."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from agent_forge.discovery import DiscoveryError, discover_recipes
+from agent_scaffold.discovery import DiscoveryError, discover_recipes
 
 
 def test_recipes_alphabetical(mock_deployments_path: Path) -> None:

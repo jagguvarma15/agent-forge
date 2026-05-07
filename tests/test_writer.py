@@ -1,4 +1,4 @@
-"""Tests for agent_forge.writer."""
+"""Tests for agent_scaffold.writer."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from agent_forge.contract import GeneratedFile, GenerationResult
-from agent_forge.writer import (
+from agent_scaffold.contract import GeneratedFile, GenerationResult
+from agent_scaffold.writer import (
     DestinationExistsError,
     WriteMode,
     write_project,

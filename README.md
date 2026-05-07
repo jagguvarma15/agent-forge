@@ -1,24 +1,24 @@
-# agent-forge
+# agent-scaffold
 
-`agent-forge` generates runnable AI agent projects from markdown specs. It ships with bundled knowledge from [agent-deployments](https://github.com/jagguvarma15/agent-deployments) — pick a recipe, target language, and framework, and the CLI assembles the relevant docs, asks Claude to emit a complete project, validates the response, and writes the files atomically into your destination of choice.
+`agent-scaffold` generates runnable AI agent projects from markdown specs. It ships with bundled knowledge from [agent-deployments](https://github.com/jagguvarma15/agent-deployments) — pick a recipe, target language, and framework, and the CLI assembles the relevant docs, asks Claude to emit a complete project, validates the response, and writes the files atomically into your destination of choice.
 
 ## Install
 
-The package is published on PyPI as **`agent-custom-forge`** (the name `agent-forge` was already taken), but the installed command is still `agent-forge`.
+The package is published on PyPI as **`agent-scaffold`**.
 
 ```bash
-pipx install agent-custom-forge
+pipx install agent-scaffold
 # or
-uv tool install agent-custom-forge
+uv tool install agent-scaffold
 # or, for one-off use:
-uvx --from agent-custom-forge agent-forge --help
+uvx --from agent-scaffold agent-scaffold --help
 ```
 
 ### Local development
 
 ```bash
-git clone https://github.com/jagguvarma15/agent-forge
-cd agent-forge
+git clone https://github.com/jagguvarma15/agent-scaffold
+cd agent-scaffold
 uv sync
 ```
 
@@ -26,14 +26,14 @@ uv sync
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-agent-forge new
+agent-scaffold new
 ```
 
 The bundled recipes work out of the box. To use a custom agent-deployments checkout instead:
 
 ```bash
-export AGENT_FORGE_DEPLOYMENTS_PATH=/path/to/agent-deployments
-agent-forge new
+export AGENT_SCAFFOLD_DEPLOYMENTS_PATH=/path/to/agent-deployments
+agent-scaffold new
 ```
 
 The interactive `new` flow walks you through:
@@ -51,13 +51,13 @@ You'll see a context summary, a generation step, a static validation pass, and a
 | Source | Variable / key | Purpose |
 | --- | --- | --- |
 | Env | `ANTHROPIC_API_KEY` | Required. The Anthropic API key used by the generator. |
-| Env | `AGENT_FORGE_DEPLOYMENTS_PATH` | Default path to your `agent-deployments` checkout. |
-| Env | `AGENT_FORGE_MODEL` | Override the model (default `claude-opus-4-7`). |
-| Env | `AGENT_FORGE_CACHE_DIR` | Override the cache root (default `~/.cache/agent-forge`). |
-| Env | `AGENT_FORGE_CONFIG_PATH` | Override the TOML fallback location. |
-| TOML | `~/.config/agent-forge/config.toml` | Fallback for `deployments_path` and `model`. |
+| Env | `AGENT_SCAFFOLD_DEPLOYMENTS_PATH` | Default path to your `agent-deployments` checkout. |
+| Env | `AGENT_SCAFFOLD_MODEL` | Override the model (default `claude-opus-4-7`). |
+| Env | `AGENT_SCAFFOLD_CACHE_DIR` | Override the cache root (default `~/.cache/agent-scaffold`). |
+| Env | `AGENT_SCAFFOLD_CONFIG_PATH` | Override the TOML fallback location. |
+| TOML | `~/.config/agent-scaffold/config.toml` | Fallback for `deployments_path` and `model`. |
 
-Run `uv run agent-forge config` to print the resolved configuration (the API key is masked).
+Run `uv run agent-scaffold config` to print the resolved configuration (the API key is masked).
 
 A typical config file:
 
@@ -68,30 +68,30 @@ model = "claude-opus-4-7"
 
 ## Pointing at your own `agent-deployments`
 
-Either set `AGENT_FORGE_DEPLOYMENTS_PATH`, write `deployments_path` to the TOML config, or pass `--deployments-path` to `agent-forge new`. The directory must contain `docs/recipes/*.md` files; cross-cutting / framework / pattern / stack docs are picked up automatically based on the recipe's references.
+Either set `AGENT_SCAFFOLD_DEPLOYMENTS_PATH`, write `deployments_path` to the TOML config, or pass `--deployments-path` to `agent-scaffold new`. The directory must contain `docs/recipes/*.md` files; cross-cutting / framework / pattern / stack docs are picked up automatically based on the recipe's references.
 
 ## Adding a new target language
 
-Drop a YAML file into [`src/agent_forge/languages/`](src/agent_forge/languages/) modeled after [python.yaml](src/agent_forge/languages/python.yaml) or [typescript.yaml](src/agent_forge/languages/typescript.yaml). Required keys:
+Drop a YAML file into [`src/agent_scaffold/languages/`](src/agent_scaffold/languages/) modeled after [python.yaml](src/agent_scaffold/languages/python.yaml) or [typescript.yaml](src/agent_scaffold/languages/typescript.yaml). Required keys:
 
 - `language`, `package_manager`, `project_layout`, `entry_point`, `manifest`
 - `required_tools` (formatter / type_checker / test)
 - `pinned_dependencies`, `framework_dependencies`
 - `forbidden`, `smoke_check`
 
-The CLI reads them on demand; no code changes needed unless you also want a language-specific static-validation tier (see [`src/agent_forge/validator.py`](src/agent_forge/validator.py)).
+The CLI reads them on demand; no code changes needed unless you also want a language-specific static-validation tier (see [`src/agent_scaffold/validator.py`](src/agent_scaffold/validator.py)).
 
 ## Troubleshooting
 
 ### Contract parse failures
 
-If Claude returns malformed JSON, agent-forge:
+If Claude returns malformed JSON, agent-scaffold:
 
-1. Saves the raw response to `~/.cache/agent-forge/failures/<timestamp>.json`.
+1. Saves the raw response to `~/.cache/agent-scaffold/failures/<timestamp>.json`.
 2. Prints a warning and asks Claude to repair the response.
 3. If the repair still fails, saves that raw response too and aborts with file pointers.
 
-You can re-run `agent-forge new` with `AGENT_FORGE_CACHE_DIR` set to inspect failures elsewhere.
+You can re-run `agent-scaffold new` with `AGENT_SCAFFOLD_CACHE_DIR` set to inspect failures elsewhere.
 
 ### `--write-mode` choices
 
@@ -106,7 +106,7 @@ All writes stage to a sibling temp directory and `os.replace` into place, so a f
 
 ### Re-running validation
 
-`agent-forge validate /path/to/generated --tier static|build|smoke` reruns one of the post-generation tiers without re-invoking the LLM.
+`agent-scaffold validate /path/to/generated --tier static|build|smoke` reruns one of the post-generation tiers without re-invoking the LLM.
 
 
 

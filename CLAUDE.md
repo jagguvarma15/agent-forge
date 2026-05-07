@@ -1,4 +1,4 @@
-# agent-forge
+# agent-scaffold
 
 Generate runnable AI agent projects from markdown specs in an `agent-deployments` repo.
 
@@ -10,7 +10,7 @@ uv run pytest -m integration   # run integration tests only
 uv run ruff check src/ tests/  # lint
 uv run ruff format src/ tests/ # format
 uv run mypy src/               # type check
-uv run agent-forge --help      # CLI usage
+uv run agent-scaffold --help      # CLI usage
 ```
 
 ## Architecture
@@ -34,4 +34,4 @@ Pipeline: `config → discovery → context → generator → contract → write
 - Pydantic models for all data structures
 - Custom exceptions carry context (e.g., `ContractParseError.raw`, `.reason`)
 - Tests use monkeypatching for Anthropic client; fixtures in `tests/fixtures/`
-- src layout: `src/agent_forge/`
+- src layout: `src/agent_scaffold/`

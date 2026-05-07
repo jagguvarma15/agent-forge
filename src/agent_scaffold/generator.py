@@ -16,12 +16,12 @@ import anthropic
 import yaml
 from pydantic import BaseModel
 
-from agent_forge.config import Config
-from agent_forge.context import AssembledContext
+from agent_scaffold.config import Config
+from agent_scaffold.context import AssembledContext
 
 logger = logging.getLogger(__name__)
 
-PROMPTS_PACKAGE = "agent_forge.prompts"
+PROMPTS_PACKAGE = "agent_scaffold.prompts"
 SYSTEM_PROMPT_FILE = "system.md"
 USER_TEMPLATE_FILE = "user_template.md"
 REPAIR_TEMPLATE_FILE = "repair.md"

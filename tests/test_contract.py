@@ -1,4 +1,4 @@
-"""Tests for agent_forge.contract."""
+"""Tests for agent_scaffold.contract."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from agent_forge.contract import (
+from agent_scaffold.contract import (
     ContractParseError,
     GeneratedFile,
     GenerationResult,

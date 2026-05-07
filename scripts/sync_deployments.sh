@@ -4,7 +4,7 @@
 set -euo pipefail
 
 REPO_URL="${AGENT_DEPLOYMENTS_REPO:-https://github.com/jagguvarma15/agent-deployments.git}"
-DEST="src/agent_forge/_bundled_deployments/docs"
+DEST="src/agent_scaffold/_bundled_deployments/docs"
 TMP_DIR=$(mktemp -d)
 
 echo "Cloning agent-deployments (shallow)..."

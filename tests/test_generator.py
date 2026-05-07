@@ -1,4 +1,4 @@
-"""Tests for agent_forge.generator (mockable client seam)."""
+"""Tests for agent_scaffold.generator (mockable client seam)."""
 
 from __future__ import annotations
 
@@ -9,10 +9,10 @@ import anthropic
 import httpx
 import pytest
 
-from agent_forge import generator
-from agent_forge.config import Config
-from agent_forge.context import AssembledContext
-from agent_forge.generator import (
+from agent_scaffold import generator
+from agent_scaffold.config import Config
+from agent_scaffold.context import AssembledContext
+from agent_scaffold.generator import (
     GenerationRequest,
     _render_repair_message,
     _render_user_message,
