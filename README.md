@@ -2,6 +2,22 @@
 
 `agent-scaffold` generates runnable AI agent projects from markdown specs. It ships with bundled knowledge from [agent-deployments](https://github.com/jagguvarma15/agent-deployments) — pick a recipe, target language, and framework, and the CLI assembles the relevant docs, asks Claude to emit a complete project, validates the response, and writes the files atomically into your destination of choice.
 
+## The three-repo ecosystem
+
+This repo is one of three that work together as a single pipeline:
+
+```
+agent-blueprints     →     agent-deployments    →     agent-scaffold
+(architecture)             (specs)                    (generator)
+"how to think"             "what to build"            "build it for me"
+patterns + tradeoffs       9 production-shaped        reads spec, asks LLM,
+framework-agnostic         markdown blueprints        writes runnable project
+```
+
+- **[agent-blueprints](https://github.com/jagguvarma15/agent-blueprints)** — framework-agnostic patterns, tradeoffs, and design guidance. Start here if you want to design before you build.
+- **[agent-deployments](https://github.com/jagguvarma15/agent-deployments)** — opinionated, production-shaped markdown specs for nine concrete agents (Python + TypeScript tracks).
+- **[agent-scaffold](https://github.com/jagguvarma15/agent-scaffold)** *(this repo)* — a CLI that consumes a deployment spec, asks Claude to emit a complete project, and writes the files atomically to disk.
+
 ## Install
 
 The package is published on PyPI as **`agent-scaffold-cli`** (the CLI command itself is still `agent-scaffold`).
